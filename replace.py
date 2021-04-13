@@ -16,18 +16,15 @@ def replace_server(file_rdp, server_name):
         for line in new_line:
             file.writelines(line)
 
-my_id = "S-1-5-21-2348035228-4019040522-1569804633-5959"
-with open(r"test_file.reg", encoding="UTF-16") as file:
-    new_line = ""
-    user_id = ""
-    for line in file:
-        if "[HKEY" in line:
-            for i, word in enumerate(line, 1):
-                if 67 < i and i != '"\"':
-                    user_id += word
-            print(user_id)
-            line = line.replace(user_id, my_id)
-        new_line += line
-with open(r"test_file.reg", "w") as file:
-    for line in new_line:
-        file.writelines(line)
+
+def replase_user(file_reg, id):
+    with open(file_reg, encoding="UTF-16") as file:
+        new_line = ""
+        for line in file:
+            if r"[HKEY_LOCAL_MACHINE" in line:
+                user_id = line.split("\\")[6]
+                line = line.replace(user_id, id)
+            new_line += line
+    with open(file_reg, "w", encoding='cp1251') as file:
+        for line in new_line:
+            file.writelines(line)

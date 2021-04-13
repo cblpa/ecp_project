@@ -12,5 +12,6 @@ def search_file(file_extension, folder):
     for path, dirs, files in os.walk(folder):
         for file in files:
             if file.endswith(file_extension):
-                result.append("\"" + os.path.join(path, file) + "\"")
+                result.append(os.path.join(path, file))
     return result
+
