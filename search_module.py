@@ -8,10 +8,10 @@ def search_file(file_extension, folder):
     :param folder: Путь до директории
     :return: лист с найденными фалами в формает полного пути до файла.
     '''
-    result = []
+    result = {}
     for path, dirs, files in os.walk(folder):
         for file in files:
             if file.endswith(file_extension):
-                result.append(os.path.join(path, file))
+                result[file] = path + "\\"
     return result
 

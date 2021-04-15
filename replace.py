@@ -17,14 +17,33 @@ def replace_server(file_rdp, server_name):
             file.writelines(line)
 
 
-def replase_user(file_reg, id):
-    with open(file_reg, encoding="UTF-16") as file:
+# def replase_user(file_reg, id):
+#     with open(file_reg, encoding="UTF-16") as file:
+#         new_line = ""
+#         for line in file:
+#             if r"[HKEY_LOCAL_MACHINE" in line:
+#                 user_id = line.split("\\")[6]
+#                 line = line.replace(user_id, id)
+#             new_line += line
+#     with open(file_reg, "w", encoding='cp1251') as file:
+#         for line in new_line:
+#             file.writelines(line)
+
+
+def replase_user(files, user_id, folder):
+    result = []
+    for i, file in enumerate(files.keys(), 1):
+        new_file = folder + "\\" + str(i) + ".reg"
         new_line = ""
-        for line in file:
-            if r"[HKEY_LOCAL_MACHINE" in line:
-                user_id = line.split("\\")[6]
-                line = line.replace(user_id, id)
-            new_line += line
-    with open(file_reg, "w", encoding='cp1251') as file:
-        for line in new_line:
-            file.writelines(line)
+        with open(files[file] + file, encoding='UTF-16') as f:
+            for line in f:
+                if r"HKEY_LOCAL_MACHINE\SOFTWARE" in line:
+                    old_id = line.split("\\")[6]
+                    if old_id != user_id:
+                        line = line.replace(old_id, user_id)
+                new_line += line
+        with open(new_file, 'w') as ff:
+            for line in new_line:
+                ff.writelines(line)
+            result.append(new_file)
+    return result
